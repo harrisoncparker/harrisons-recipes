@@ -12,7 +12,7 @@ class UserManager(BaseUserManager):
         if not email:
             raise ValueError('Users must have an email address')
 
-        user = self.model(email=email, **extra_fields)
+        user = self.model(email=self.normalize_email(email), **extra_fields)
         user.set_password(password)
         user.save(self._db)
 
@@ -39,7 +39,3 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-
-    def save(self, *args, **kwargs):
-        self.email = self.email.lower()
-        return super(User, self).save(*args, **kwargs)
