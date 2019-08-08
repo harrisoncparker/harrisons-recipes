@@ -15,3 +15,13 @@ class ModelTests(TestCase):
 
         self.assertEqual(user.email, email)
         self.assertTrue(user.check_password(password))
+
+    def test_new_user_email_normalized(self):
+        """ Test that the new user emails are case insensitive """
+        email = 'NAME@Test.com'
+        user = get_user_model().objects.create_user(
+            email=email,
+            password='TestPass123!'
+        )
+
+        self.assertEqual(user.email, 'name@test.com')

@@ -26,3 +26,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
+
+    def save(self, *args, **kwargs):
+        self.email = self.email.lower()
+        return super(User, self).save(*args, **kwargs)
